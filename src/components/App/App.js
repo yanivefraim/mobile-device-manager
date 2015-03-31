@@ -17,6 +17,7 @@ import AppStore from '../../stores/AppStore';
 import Navbar from '../Navbar';
 import ContentPage from '../ContentPage';
 import NotFoundPage from '../NotFoundPage';
+import DeviceList from '../DeviceList';
 
 export default class App extends React.Component {
 
@@ -46,21 +47,9 @@ export default class App extends React.Component {
 
     return (
       <div className="App">
-        <Navbar />
-        {
-          this.props.path === '/' ?
-          <div className="jumbotron">
-            <div className="container text-center">
-              <h1>React</h1>
-              <p>Complex web apps made easy</p>
-            </div>
-          </div> :
-          <div className="container">
-            <h2>{page.title}</h2>
-          </div>
-        }
+        
         <ContentPage className="container" {...page} />
-        <TextBox />
+        <DeviceList />
         <div className="navbar-footer">
           <div className="container">
             <p className="text-muted">
