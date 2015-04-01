@@ -15,6 +15,7 @@ export default keyMirror({
   LOAD_PAGE: null,
   LOAD_PAGE_SUCCESS: null,
   LOAD_PAGE_ERROR: null,
-  CHANGE_LOCATION: null
+  CHANGE_LOCATION: null,
+  PUSH_DATA: null
 
 });
