@@ -15,6 +15,13 @@ import http from 'superagent';
 
 export default {
 
+  pushServerData(data) {
+    Dispatcher.handleServerAction({
+          actionType: ActionTypes.PUSH_DATA,
+          val: data
+        });
+  },
+
   navigateTo(path, options) {
     if (ExecutionEnvironment.canUseDOM) {
       if (options && options.replace) {
