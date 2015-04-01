@@ -18,12 +18,14 @@ import Navbar from '../Navbar';
 import ContentPage from '../ContentPage';
 import NotFoundPage from '../NotFoundPage';
 import DeviceList from '../DeviceList';
+import WebAPI from '../../core/WebAPI';
 
 export default class App extends React.Component {
 
   componentDidMount() {
     window.addEventListener('popstate', this.handlePopState);
     window.addEventListener('click', this.handleClick);
+    WebAPI.init();
   }
 
   componentWillUnmount() {
