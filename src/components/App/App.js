@@ -25,7 +25,8 @@ export default class App extends React.Component {
   componentDidMount() {
     window.addEventListener('popstate', this.handlePopState);
     window.addEventListener('click', this.handleClick);
-    WebAPI.init();
+    var webAPI = new WebAPI();
+    webAPI.init();
   }
 
   componentWillUnmount() {
@@ -38,6 +39,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    
     var page = AppStore.getPage(this.props.path);
     invariant(page !== undefined, 'Failed to load page content.');
     this.props.onSetTitle(page.title);

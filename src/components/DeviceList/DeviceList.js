@@ -5,7 +5,7 @@ import DeviceStore from '../../stores/DeviceStore';
 
 
 function getDeviceState(){
-	return {'devices': DeviceStore.getDevices()};
+	return DeviceStore.getDevices();
 }
 
 export default class DeviceList extends React.Component {
@@ -17,24 +17,30 @@ export default class DeviceList extends React.Component {
 
 	// getInitialState() {
 	// 	return getDeviceState();
-	// },
+	// }
 
-	componentDidMount() {
-	    DeviceStore.addChangeListener(this._onChange);
+	componentDidMount() {debugger;
+	    DeviceStore.addListener('change',this._onChange);
   	}
 
 	componentWillUnmount() {
-		DeviceStore.removeChangeListener(this._onChange);
+		DeviceStore.removeListener('change', this._onChange);
 	}
 
 	render() {
-		var devicesHTML = this.state.devices.map( function( deviceItem ){
+		debugger;
+		var devicesHTML = "";
+		if(this.state.devices){
+			devicesHTML = this.state.devices.map( function( deviceItem ){
 			return (
 					<li key={ deviceItem.deviceID }>
 					{deviceItem.deviceName}
 					</li>
 				);	
-		});
+			});	
+		}
+		
+		
 		return (
 		  <div>
 		       <ul>
@@ -44,8 +50,9 @@ export default class DeviceList extends React.Component {
 		);
 	}
 
-	_onChange() {
+	_onChange() {debugger;
     	this.setState(getDeviceState());
+    	
   	}
 
 }
