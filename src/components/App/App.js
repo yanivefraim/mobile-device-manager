@@ -51,7 +51,6 @@ export default class App extends React.Component {
   // }
 
   render() {
-    debugger;
     var page = AppStore.getPage(this.props.path);
     invariant(page !== undefined, 'Failed to load page content.');
     this.props.onSetTitle(page.title);
