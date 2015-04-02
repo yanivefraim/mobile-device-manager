@@ -9,8 +9,9 @@ function getDeviceState(){
 }
 
 export default class DeviceList extends React.Component {
-
+	
 	constructor(props) {
+
 		super(props);
 		this.state = getDeviceState();
 	}
@@ -20,11 +21,11 @@ export default class DeviceList extends React.Component {
 	// }
 
 	componentDidMount() {debugger;
-	    DeviceStore.addListener('change',this._onChange);
+	    DeviceStore.addListener('change',this._onChange.bind(this));
   	}
 
 	componentWillUnmount() {
-		DeviceStore.removeListener('change', this._onChange);
+		DeviceStore.removeListener('change', this._onChange.bind(this));
 	}
 
 	render() {
@@ -52,7 +53,7 @@ export default class DeviceList extends React.Component {
 
 	_onChange() {debugger;
     	this.setState(getDeviceState());
-    	
+
   	}
 
 }
