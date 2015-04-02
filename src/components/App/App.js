@@ -17,29 +17,41 @@ import AppStore from '../../stores/AppStore';
 import Navbar from '../Navbar';
 import ContentPage from '../ContentPage';
 import NotFoundPage from '../NotFoundPage';
+import DeviceStore from '../../stores/DeviceStore';
 import DeviceList from '../DeviceList';
 import WebAPI from '../../core/WebAPI';
 
+function getDeviceState(){
+  return DeviceStore.getDevices();
+}
+
 export default class App extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = getDeviceState();
+  }
+
   componentDidMount() {
-    window.addEventListener('popstate', this.handlePopState);
-    window.addEventListener('click', this.handleClick);
+    // window.addEventListener('popstate', this.handlePopState);
+    // window.addEventListener('click', this.handleClick);
+    DeviceStore.addListener('change',this._onChange.bind(this));
     var webAPI = new WebAPI();
     webAPI.init();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('popstate', this.handlePopState);
-    window.removeEventListener('click', this.handleClick);
+    // window.removeEventListener('popstate', this.handlePopState);
+    // window.removeEventListener('click', this.handleClick);
+    DeviceStore.removeListener('change', this._onChange.bind(this));
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.path !== nextProps.path;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.path !== nextProps.path;
+  // }
 
   render() {
-    
+    debugger;
     var page = AppStore.getPage(this.props.path);
     invariant(page !== undefined, 'Failed to load page content.');
     this.props.onSetTitle(page.title);
@@ -52,19 +64,14 @@ export default class App extends React.Component {
     return (
       <div className="App">
         
-        <ContentPage className="container" {...page} />
-        <DeviceList />
-        <div className="navbar-footer">
-          <div className="container">
-            <p className="text-muted">
-              <span>© Your Company</span>
-              <span><a href="/">Home</a></span>
-              <span><a href="/privacy">Privacy</a></span>
-            </p>
-          </div>
-        </div>
+        <DeviceList devices = {this.state.devices} />
+        
       </div>
     );
+  }
+
+  _onChange() {debugger;
+      this.setState(getDeviceState());
   }
 
   handlePopState(event) {
