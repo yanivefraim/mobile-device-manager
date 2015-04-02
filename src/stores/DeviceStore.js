@@ -8,7 +8,7 @@ import assign from 'react/lib/Object.assign';
 
 var CHANGE_EVENT = 'change';
 
-var _deviceList = {};
+var _deviceList = {'devices':[]};
 
 function create(data){
 	_deviceList = data;
@@ -51,7 +51,7 @@ var DeviceStore = assign({}, EventEmitter.prototype, {
 
 DeviceStore.dispatcherToken = Dispatcher.register((payload) => {
 	var action = payload.action;
-debugger;
+
 	switch (action.actionType) {
 		case ActionTypes.PUSH_DATA:
 			create(action.val);

@@ -29,18 +29,14 @@ export default class DeviceList extends React.Component {
 	}
 
 	render() {
-		debugger;
-		var devicesHTML = "";
-		if(this.state.devices){
-			devicesHTML = this.state.devices.map( function( deviceItem ){
+		
+		var	devicesHTML = this.state.devices.map( function( deviceItem ){
 			return (
 					<li key={ deviceItem.deviceID }>
 					{deviceItem.deviceName}
 					</li>
 				);	
 			});	
-		}
-		
 		
 		return (
 		  <div>
