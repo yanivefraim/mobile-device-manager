@@ -1,0 +1,6 @@
+{
+  "name": "DeviceItem",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./DeviceItem.js"
+}

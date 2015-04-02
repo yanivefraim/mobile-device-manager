@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import DeviceItem from '../DeviceItem';
 import DeviceStore from '../../stores/DeviceStore';
 
 
@@ -11,7 +12,6 @@ function getDeviceState(){
 export default class DeviceList extends React.Component {
 	
 	constructor(props) {
-
 		super(props);
 		this.state = getDeviceState();
 	}
@@ -20,7 +20,7 @@ export default class DeviceList extends React.Component {
 	// 	return getDeviceState();
 	// }
 
-	componentDidMount() {debugger;
+	componentDidMount() {
 	    DeviceStore.addListener('change',this._onChange.bind(this));
   	}
 
@@ -32,9 +32,7 @@ export default class DeviceList extends React.Component {
 		
 		var	devicesHTML = this.state.devices.map( function( deviceItem ){
 			return (
-					<li key={ deviceItem.deviceID }>
-					{deviceItem.deviceName}
-					</li>
+					<DeviceItem device = {deviceItem} />
 				);	
 			});	
 		
