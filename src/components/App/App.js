@@ -17,124 +17,49 @@ import AppStore from '../../stores/AppStore';
 import Navbar from '../Navbar';
 import ContentPage from '../ContentPage';
 import NotFoundPage from '../NotFoundPage';
-import DeviceStore from '../../stores/DeviceStore';
-import DeviceList from '../DeviceList';
-import WebAPI from '../../core/WebAPI';
+import auth from '../../core/auth';
+import Router from 'react-router';
+var { Route, RouteHandler, Link } = Router;
 
-function getDeviceState(){
-  return DeviceStore.getDevices();
-}
 
 export default class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = getDeviceState();
+  constructor () {
+    this.state = {
+      loggedIn: auth.loggedIn()
+    };
   }
 
-  componentDidMount() {
-    // window.addEventListener('popstate', this.handlePopState);
-    // window.addEventListener('click', this.handleClick);
-    DeviceStore.addListener('change',this._onChange.bind(this));
-    var webAPI = new WebAPI();
-    webAPI.init();
-  }
-
-  componentWillUnmount() {
-    // window.removeEventListener('popstate', this.handlePopState);
-    // window.removeEventListener('click', this.handleClick);
-    DeviceStore.removeListener('change', this._onChange.bind(this));
-  }
-
-  // shouldComponentUpdate(nextProps) {
-  //   return this.props.path !== nextProps.path;
-  // }
-
-  render() {
-    var page = AppStore.getPage(this.props.path);
-    invariant(page !== undefined, 'Failed to load page content.');
-    this.props.onSetTitle(page.title);
-
-    if (page.type === 'notfound') {
-      this.props.onPageNotFound();
-      return React.createElement(NotFoundPage, page);
-    }
-
-    return (
-      <div className="App">
-        
-        <DeviceList devices = {this.state.devices} />
-        
-      </div>
-    );
-  }
-
-  _onChange() {debugger;
-      this.setState(getDeviceState());
-  }
-
-  handlePopState(event) {
-    AppActions.navigateTo(window.location.pathname, {replace: !!event.state});
-  }
-
-  handleClick(event) {
-    if (event.button === 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.defaultPrevented) {
-      return;
-    }
-
-    // Ensure link
-    var el = event.target;
-    while (el && el.nodeName !== 'A') {
-      el = el.parentNode;
-    }
-    if (!el || el.nodeName !== 'A') {
-      return;
-    }
-
-    // Ignore if tag has
-    // 1. "download" attribute
-    // 2. rel="external" attribute
-    if (el.getAttribute('download') || el.getAttribute('rel') === 'external') {
-      return;
-    }
-
-    // Ensure non-hash for the same path
-    var link = el.getAttribute('href');
-    if (el.pathname === location.pathname && (el.hash || link === '#')) {
-      return;
-    }
-
-    // Check for mailto: in the href
-    if (link && link.indexOf('mailto:') > -1) {
-      return;
-    }
-
-    // Check target
-    if (el.target) {
-      return;
-    }
-
-    // X-origin
-    var origin = window.location.protocol + '//' + window.location.hostname +
-      (window.location.port ? ':' + window.location.port : '');
-    if (!(el.href && el.href.indexOf(origin) === 0)) {
-      return;
-    }
-
-    // Rebuild path
-    var path = el.pathname + el.search + (el.hash || '');
-
-    event.preventDefault();
-    AppActions.loadPage(path, () => {
-      AppActions.navigateTo(path);
+  setStateOnAuth (loggedIn) {
+    this.setState({
+      loggedIn: loggedIn
     });
   }
 
+  componentWillMount () {
+    auth.onChange = this.setStateOnAuth.bind(this);
+    auth.login();
+  }
+
+  render() {
+    
+    return (
+      <div className="App">
+        <RouteHandler/>
+      </div>
+    );
+  }
 }
 
-App.propTypes = {
-  path: React.PropTypes.string.isRequired,
-  onSetTitle: React.PropTypes.func.isRequired,
-  onSetMeta: React.PropTypes.func.isRequired,
-  onPageNotFound: React.PropTypes.func.isRequired
+var requireAuth = (Component) => {
+  return class Authenticated extends React.Component {
+    static willTransitionTo(transition) {
+      if (!auth.loggedIn()) {
+        transition.redirect('/login', {}, {'nextPath' : transition.path});
+      }  
+    }
+    render () {
+      return <Component {...this.props}/>
+    }
+  }
 };

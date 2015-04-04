@@ -9,20 +9,54 @@
 'use strict';
 
 import React from 'react';
+import DeviceStore from '../../stores/DeviceStore';
+import DeviceList from '../DeviceList';
+import WebAPI from '../../core/WebAPI';
+import requireAuth from '../../core/requireAuth';
 
-export default class ContentPage extends React.Component {
+
+function getDeviceState(){
+  return DeviceStore.getDevices();
+}
+
+var ContentPage = requireAuth(class extends React.Component {
+//export default class ContentPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = getDeviceState();
+  }
+
+  componentDidMount() {
+    // window.addEventListener('popstate', this.handlePopState);
+    // window.addEventListener('click', this.handleClick);
+    DeviceStore.addListener('change',this._onChange.bind(this));
+    var webAPI = new WebAPI();
+    webAPI.init();
+  }
+
+  componentWillUnmount() {
+    // window.removeEventListener('popstate', this.handlePopState);
+    // window.removeEventListener('click', this.handleClick);
+    DeviceStore.removeListener('change', this._onChange.bind(this));
+  }
+
 
   render() {
-    var { className, body, other } = this.props;
+    
 
     return (
-      <div className={'ContentPage ' + className}
-        dangerouslySetInnerHTML={{__html: body}} {...other} />
+    	<div>
+    		<DeviceList devices = {this.state.devices} />
+    	</div>
     );
   }
 
-}
+  _onChange() {debugger;
+      this.setState(getDeviceState());
+  }
 
-ContentPage.propTypes = {
-  body: React.PropTypes.string.isRequired
-};
+
+});
+
+export default ContentPage;
