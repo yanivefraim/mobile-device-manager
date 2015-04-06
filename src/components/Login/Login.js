@@ -1,8 +1,8 @@
 
 var React = require('react');
 var Router = require('react-router');
-
-
+import auth from '../../core/auth';
+var { Route, RouteHandler, Link } = Router;
 
 export default class Login extends React.Component {
 
@@ -15,17 +15,17 @@ export default class Login extends React.Component {
 
   handleSubmit (event) {
     event.preventDefault();
-    var { router } = this.context;
-    var nextPath = router.getCurrentQuery().nextPath;
+    //var { router } = this.context;
+    var nextPath;// = router.getCurrentQuery().nextPath;
     var email = this.refs.email.getDOMNode().value;
     var pass = this.refs.pass.getDOMNode().value;
     auth.login(email, pass, (loggedIn) => {
       if (!loggedIn)
         return this.setState({ error: true });
       if (nextPath) {
-        router.replaceWith(nextPath);
+        Route.replaceWith(nextPath);
       } else {
-        router.replaceWith('/about');
+        Route.replaceWith('/ContentPage');
       }
     });
   }
