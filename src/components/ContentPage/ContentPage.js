@@ -6,57 +6,49 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-'use strict';
+ 'use strict';
 
-import React from 'react';
-import DeviceStore from '../../stores/DeviceStore';
-import DeviceList from '../DeviceList';
-import WebAPI from '../../core/WebAPI';
-import requireAuth from '../../core/requireAuth';
+ import React from 'react';
+ import DeviceStore from '../../stores/DeviceStore';
+ import DeviceList from '../DeviceList';
+ import WebAPI from '../../core/WebAPI';
+ import requireAuth from '../../core/requireAuth';
 
 
-function getDeviceState(){
-  return DeviceStore.getDevices();
-}
+ function getDeviceState(){
+ 	return DeviceStore.getDevices();
+ }
 
-var ContentPage = requireAuth(class extends React.Component {
+ var ContentPage = requireAuth(class extends React.Component {
 //export default class ContentPage extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = getDeviceState();
-  }
+	constructor(props) {
+		super(props);
+		this.state = getDeviceState();
+	}
 
-  componentDidMount() {
-    // window.addEventListener('popstate', this.handlePopState);
-    // window.addEventListener('click', this.handleClick);
-    DeviceStore.addListener('change',this._onChange.bind(this));
-    var webAPI = new WebAPI();
-    webAPI.init();
-  }
+	componentDidMount() {
+		DeviceStore.addListener('change',this._onChange.bind(this));
+		var webAPI = new WebAPI();
+		webAPI.init();
+	}
 
-  componentWillUnmount() {
-    // window.removeEventListener('popstate', this.handlePopState);
-    // window.removeEventListener('click', this.handleClick);
-    DeviceStore.removeListener('change', this._onChange.bind(this));
-  }
+	componentWillUnmount() {
+    	DeviceStore.removeListener('change', this._onChange.bind(this));
+	}
 
+	render() {
+		return (
+			<div>
+			<DeviceList devices = {this.state.devices} />
+			</div>
+		);
+	}
 
-  render() {
-    
-
-    return (
-    	<div>
-    		<DeviceList devices = {this.state.devices} />
-    	</div>
-    );
-  }
-
-  _onChange() {debugger;
-      this.setState(getDeviceState());
-  }
-
+	_onChange() {debugger;
+		this.setState(getDeviceState());
+	}
 
 });
 
-export default ContentPage;
+ export default ContentPage;
