@@ -18,7 +18,7 @@
     "front-matter": "1.0.0",
     "jade": "1.9.2",
     "lodash": "3.5.0",
-    "react": "0.13.0",
+    "react": "0.13.1",
     "superagent": "1.1.0"
   },
   "devDependencies": {
@@ -54,6 +54,7 @@
     "jest-cli": "^0.4.0",
     "less": "^2.4.0",
     "less-loader": "^2.1.0",
+    "material-ui": "^0.7.3",
     "minimist": "^1.1.1",
     "protractor": "^1.8.0",
     "psi": "^1.0.6",
