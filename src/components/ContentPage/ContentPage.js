@@ -63,7 +63,7 @@ this.iconMenuItems = [
 			<div>
 				<Toolbar>
 				  <ToolbarGroup key={0} float="left">
-				    <TextField hintText="Hint Text" ref="searchBox" onChange={this._onChange.bind(this)}  id="searchBox"/>
+				    <TextField hintText="type to search" ref="searchBox" onChange={this._onChange.bind(this)}  id="searchBox"/>
 				  </ToolbarGroup>
 				  
 				</Toolbar>
