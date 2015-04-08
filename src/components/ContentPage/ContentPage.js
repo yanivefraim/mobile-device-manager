@@ -63,7 +63,7 @@ this.iconMenuItems = [
 			<div>
 				<Toolbar>
 				  <ToolbarGroup key={0} float="left">
-				    <TextField hintText="Hint Text" onChange={this._onChange.bind(this)} ref="searchBox" id="searchBox"/>
+				    <TextField hintText="Hint Text" ref="searchBox" onChange={this._onChange.bind(this)}  id="searchBox"/>
 				  </ToolbarGroup>
 				  
 				</Toolbar>
@@ -73,9 +73,8 @@ this.iconMenuItems = [
 		);
 	}
 
-	_onChange() {debugger;
-
-		this.setState(getDeviceState(document.getElementById("searchBox").value));
+	_onChange() {
+		this.setState(getDeviceState(React.findDOMNode(this.refs.searchBox).childNodes[1].value));
 	}
 
 });
