@@ -65,7 +65,7 @@ gulp.task('assets', function() {
 
 // CSS style sheets
 gulp.task('styles', function() {
-  src.styles = 'src/styles/**/*.{css,less}';
+  src.styles = 'src/**/*.{css,less}';
   return gulp.src('src/styles/bootstrap.less')
     .pipe($.plumber())
     .pipe($.less({
