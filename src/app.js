@@ -19,6 +19,7 @@ import ActionTypes from './constants/ActionTypes';
 import Login from './components/Login';
 import ContentPage from './components/ContentPage';
 import Router from 'react-router';
+import DeviceItem from './components/DeviceItem'
 
 var { Route, RouteHandler, Link } = Router;
 
@@ -29,6 +30,7 @@ var { Route, RouteHandler, Link } = Router;
     <Route name="app" path="/" handler={App}>
       <Route name="login" handler={Login}/>
       <Route handler={ContentPage}/>
+      <Route path="DeviceItem" handler={DeviceItem}/>
     </Route>
   );
 
