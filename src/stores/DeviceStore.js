@@ -15,9 +15,19 @@ function create(data){
 }
 
 var DeviceStore = assign({}, EventEmitter.prototype, {
-	getDevices() {
+	getDevices(search) {
+		if( typeof search !== 'undefined' && search.length > 0 ){
+			
+			var _filteredDevices = _deviceList.devices.filter(function(x){
+					return (x.deviceName.toLowerCase().indexOf( search.toLowerCase() ) >= 0);
+			});	
+			return {'devices': _filteredDevices};
+		}
 		return _deviceList;
+		
+		
 		//return [{"deviceID":"123", "deviceName":"Nexus4"},{"deviceID":"124", "deviceName":"Nexus5"}];
+		
 	},
 
 	/**
